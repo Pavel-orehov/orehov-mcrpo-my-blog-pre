@@ -2,7 +2,7 @@
 
 ## 👋 Добро пожаловать!
 
-Это учебный проект для практики работы со **Spring Framework**.
+Это учебный проект для практики работы со **Spring Boot**.
 
 Вам предстоит **дописать недостающую функциональность** backend приложения-блога.
 
@@ -45,18 +45,14 @@ grep -r "TODO:" src/
 ### 4. Соберите и проверьте
 
 ```bash
-# Установить зависимости
-mvn clean install
-
-# Собрать проект
+# Собрать backend (Executable JAR)
 mvn clean package
 
 # Запустить тесты
 mvn test
 
-# Развернуть на Tomcat
-cp target/*.war $CATALINA_HOME/webapps/ROOT.war
-catalina run
+# Запустить backend (встроенный Jetty)
+java -jar target/my-blog-back-app.jar
 ```
 
 ---
@@ -102,10 +98,10 @@ git clone https://github.com/Yandex-Practicum/mcrpo-my-blog-pre.git
 cd mcrpo-my-blog-pre
 
 # 2. Собрать backend
-mvn clean install
+mvn clean package
 
-# 3. Запустить backend (Jetty)
-mvn jetty:run -Dmaven.test.skip=true
+# 3. Запустить backend (встроенный Jetty)
+java -jar target/my-blog-back-app.jar
 
 # Backend запустится на http://localhost:8080
 
@@ -126,11 +122,24 @@ npm run dev
 ## 🛠 Технологии
 
 - Java 17
-- Spring Framework 6.1+
+- Spring Boot 3.2+
 - Maven
-- H2 Database
-- JUnit 5 + Mockito
-- Tomcat 11
+- Spring Web (Spring MVC)
+- Spring Data JDBC + JdbcTemplate
+- H2 Database (in-memory)
+- JUnit 5 + Spring Boot Test
+
+---
+
+## 🗄️ H2 Console
+
+После запуска приложения H2 Console доступна по адресу `http://localhost:8080/h2-console`.
+
+Параметры входа (важно указать именно **in-memory** БД, иначе H2 будет пытаться открыть файловую БД вроде `C:/Users/.../test`):
+
+- **JDBC URL**: `jdbc:h2:mem:blogdb`
+- **User Name**: `sa`
+- **Password**: *(пусто)*
 
 ---
 
@@ -165,7 +174,7 @@ curl http://localhost:8080/api/posts/1/likes -X POST
 ### Что делать, если застрял?
 
 1. Прочитайте существующий код — все TODO методы похожи на уже реализованные
-2. Читайте логи Tomcat — ошибки видны в консоли
+2. Читайте логи Jetty — ошибки видны в консоли
 3. Смотрите БД через H2 консоль: http://localhost:8080/h2-console
 
 ---
